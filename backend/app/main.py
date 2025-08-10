@@ -18,8 +18,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        # agrega aquí tu dominio de Vercel cuando despliegues
-        # "https://tu-frontend.vercel.app",
+        "https://taveron-app.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
