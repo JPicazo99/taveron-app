@@ -20,6 +20,7 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "https://taveron-app.vercel.app",
     ],
+    allow_origin_regex=r"https://.*\.vercel\.app$", # permite *cualquier* subdominio de vercel.app (previews)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
