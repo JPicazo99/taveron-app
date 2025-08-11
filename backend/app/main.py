@@ -7,7 +7,7 @@ import cloudinary
 import cloudinary.uploader
 import os
 
-# Crear tablas (si no existen) 
+# Crear tablas (si no existen)
 models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI(title="API Directorio de Contactos")
@@ -20,7 +20,7 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "https://taveron-app.vercel.app",
     ],
-    allow_origin_regex=r"https://.*\.vercel\.app$", # permite *cualquier* subdominio de vercel.app (previews)
+    allow_origin_regex=r"https://.*\.vercel\.app$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -60,6 +60,13 @@ def leer_usuario(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     return usuario
 
+@app.put("/usuarios/{user_id}", response_model=schemas.User)
+def actualizar_usuario(user_id: int, usuario: schemas.UserCreate, db: Session = Depends(get_db)):
+    actualizado = crud.actualizar_usuario(db, user_id, usuario)
+    if actualizado is None:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    return actualizado
+
 @app.delete("/usuarios/{user_id}", response_model=schemas.User)
 def eliminar_usuario(user_id: int, db: Session = Depends(get_db)):
     usuario = crud.eliminar_usuario(db, user_id)
@@ -96,7 +103,6 @@ def subir_foto_usuario(user_id: int, file: UploadFile = File(...), db: Session =
     if not CLOUDINARY_URL:
         raise HTTPException(status_code=500, detail="CLOUDINARY_URL no configurada")
 
-    # Validaciones básicas
     if not file.content_type or not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="El archivo debe ser una imagen")
 
@@ -104,7 +110,6 @@ def subir_foto_usuario(user_id: int, file: UploadFile = File(...), db: Session =
     if not usuario:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
-    # Subir a Cloudinary
     result = cloudinary.uploader.upload(
         file.file,
         folder="taveron/users",
