@@ -68,8 +68,43 @@ El sistema incluye un backend en "FastAPI" y un frontend en "React", desplegado 
 DATABASE_URL=postgresql://usuario:password@host:puerto/base
 CLOUDINARY_URL=cloudinary://<API_KEY>:<API_SECRET>@<CLOUD_NAME>
 
+---
+
+## Modelo del schema:  
+
+El sistema modela un directorio de contactos donde cada usuario administra sus propios contactos. 
+Se eligió un esquema relacional sencillo y normalizado por claridad, integridad referencial y facilidad de reporte.
+
+---
+
+## Entidades y relaciones
+
+- users: información principal del usuario (id, nombre, email, photo_url).
+
+- contacts: contactos pertenecientes a un usuario (id, nombre, telefono, email, user_id).
+
+Relación 1:N: Un usuario puede tener muchos contactos; cada contacto pertenece a un usuario 
+(FK contacts.user_id → users.id, con ON DELETE CASCADE para limpiar contactos al eliminar al usuario).
+
+CREATE TABLE users (
+  id         INTEGER PRIMARY KEY,
+  nombre     VARCHAR,
+  email      VARCHAR UNIQUE,
+  photo_url  VARCHAR
+);
+
+CREATE TABLE contacts (
+  id        INTEGER PRIMARY KEY,
+  nombre    VARCHAR,
+  telefono  VARCHAR,
+  email     VARCHAR,
+  user_id   INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 
   
+
 
 
 
