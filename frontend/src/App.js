@@ -39,7 +39,7 @@ function App() {
 
           {/* Segunda línea: descripción */}
           <Typography variant="body2" color="inherit" sx={{ opacity: 0.85 }}>
-            Visualización distribuciones — (Bootstrap, Chart.js, FastAPI, NumPy, JavaScript, HTML, CSS, Python).{" "}
+            Herramientas utilizadas — (FastAPI, SQLAlchemy, Cloudinary, Vercel, Railway, React, Material UI, Axios, JavaScript, HTML, CSS, Python).{" "}
             <strong>by Joel Picazo</strong>
           </Typography>
         </Toolbar>
